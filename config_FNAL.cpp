@@ -161,8 +161,8 @@ int main(int argc, char **argv) {
 
       tree->GetEntry(entry);
       auto &td = cfg.treeData; 
-      float myX = td.x_dut[cfg.channels["photek"].ampid];
-      float myY = td.y_dut[cfg.channels["photek"].ampid];
+      float myX = td.x_dut[cfg.channels["photek"].group];
+      float myY = td.y_dut[cfg.channels["photek"].group];
 
       if( myX == -999 || myY == -999 ) continue;
 
@@ -178,6 +178,9 @@ int main(int argc, char **argv) {
 	rootstuff[ch.name].p2_amp_vs_XY->Fill(myX, myY, td.amp[ch.ampid]);
 	// cut on BS
 	if( myX == -999 || myY == -999 ) continue;
+
+	//std::cout << fabs(myX-s.centerX) << "," << s.half_beam_spot_x << ","
+	//	  << fabs(myY-s.centerY) << "," << s.half_beam_spot_y << std::endl;
 	if( fabs(myX-s.centerX) > s.half_beam_spot_x ||
 	    fabs(myY-s.centerY) > s.half_beam_spot_y ) continue;
 
@@ -240,7 +243,6 @@ int main(int argc, char **argv) {
 	continue;
 
       c_amp_vs_XY->cd(canvas);
-      canvas++; 
       auto *hist = rootstuff[ch.name].p2_amp_vs_XY; 
       hist->Draw("COLZ"); 
       hist->SetStats(0);
@@ -263,8 +265,7 @@ int main(int argc, char **argv) {
       auto &ch = chan.second;
       c_amp->cd(canvas+1);
       gPad->SetLogy();
-      canvas++;
-      
+
       auto *h_amp = rootstuff[ch.name].h_amp; 
       auto *h_amp_cut = rootstuff[ch.name].h_amp_cut; 
       h_amp-> SetStats(0);
@@ -314,7 +315,6 @@ int main(int argc, char **argv) {
     for (auto &chan : cfg.channels)  {
       auto &ch = chan.second;
       c_time -> cd(canvas+1);
-      canvas++; 
       gPad -> SetLogy();
       auto *h_time = rootstuff[ch.name].h_time;
       h_time->SetStats(0);
@@ -363,8 +363,8 @@ int main(int argc, char **argv) {
       auto &td = cfg.treeData;
       auto &phtk = cfg.channels["photek"];
       
-      float myX = td.x_dut[phtk.ampid]; 
-      float myY = td.y_dut[phtk.ampid]; 
+      float myX = td.x_dut[phtk.group]; 
+      float myY = td.y_dut[phtk.group]; 
       // cut on BS
       if( myX == -999 || myY == -999 ) continue;
       if( fabs(myX-s.centerX) > s.half_beam_spot_x ||
@@ -423,7 +423,6 @@ int main(int argc, char **argv) {
 	continue;
 
       c_time_vs_amp->cd(canvas);
-      canvas++; 
       auto *h2_deltat_vs_amp = rootstuff[ch.name].h2_deltat_vs_amp;
       auto *p_deltat_vs_amp = rootstuff[ch.name].p_deltat_vs_amp; 
       auto *h_deltat = rootstuff[ch.name].h_deltat;
@@ -570,8 +569,8 @@ int main(int argc, char **argv) {
       
       tree->GetEntry(entry);
       
-      float myX = td.x_dut[phtk.ampid];
-      float myY = td.y_dut[phtk.ampid];
+      float myX = td.x_dut[phtk.group];
+      float myY = td.y_dut[phtk.group];
   
       if( myX == -999 || myY == -999 ) continue;
       if( fabs(myX-s.centerX) > s.half_beam_spot_x ||
@@ -1220,8 +1219,8 @@ int main(int argc, char **argv) {
       auto &phtk = cfg.channels["photek"];
 
       tree->GetEntry(entry);
-      float myX = td.x_dut[phtk.ampid];
-      float myY = td.y_dut[phtk.ampid];
+      float myX = td.x_dut[phtk.group];
+      float myY = td.y_dut[phtk.group];
   
       if( myX == -999 || myY == -999 ) continue;
       if( fabs(myX-s.centerX) > s.half_beam_spot_x ||

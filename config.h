@@ -64,6 +64,7 @@ struct channelSettings {
   float mip_peak;
   float time_peak;
   float time_sigma; 
+  int group;
 }; 
 
 

@@ -67,6 +67,7 @@ config::config(string filename) {
     ("channel.timeids", po::value<string>(), "timeids")
     ("channel.ampmin", po::value<string>(), "ampmin")
     ("channel.ampmax", po::value<string>(), "ampmax")
+    ("channel.groups", po::value<string>(), "vme channel group number")
     ("processing.algorithm", po::value<string>(), "processing algo to use")
     ("selections.MIP_low_cut", po::value<float>(), "low amp cut in fraction of MIP Peak")
     ("selections.MIP_high_cut", po::value<float>(), "high amp cut in fraction of MIP peak")
@@ -117,12 +118,13 @@ config::config(string filename) {
     string timeids = cmap["channel.timeids"].as<string>();
     string ampmins = cmap["channel.ampmin"].as<string>();
     string ampmaxes = cmap["channel.ampmax"].as<string>();
-    
+    string groups = cmap["channel.groups"].as<string>();
 
     std::vector<float> amplst;
     std::vector<float> amaxlst;
     std::vector<float> aminlst;
     std::vector<float> timelst;
+    std::vector<int> grouplst;
 
     std::vector<string> names;
     std::vector<string> lst;
@@ -142,7 +144,10 @@ config::config(string filename) {
     split(lst, timeids, boost::is_any_of(",")); 
     std::for_each(lst.begin(), lst.end(), [&timelst](string s) { timelst.push_back(atof(s.c_str())); });
     lst.clear();
-
+    
+    split(lst, groups, boost::is_any_of(","));
+    std::for_each(lst.begin(), lst.end(), [&grouplst](string s) { grouplst.push_back(atoi(s.c_str())); });
+    lst.clear();
 
     int count = names.size();
     
@@ -150,7 +155,9 @@ config::config(string filename) {
     if ((count != amaxlst.size()) ||
 	(count != aminlst.size()) ||
 	(count != timelst.size()) ||
-	(count != amplst.size())) {
+	(count != amplst.size())  ||
+	(count != grouplst.size()))
+      {
 	std::cout << "Error! In our config file the length for names, ampids, etc, differs" << std::endl;
 	std::cout << "Sizes" << std::endl << "--------" << std::endl
 		  << "Amp IDs:" << "\t" << amplst.size() << std::endl
@@ -171,6 +178,7 @@ config::config(string filename) {
       ch.timeid = timelst[i];
       ch.ampmin = aminlst[i];
       ch.ampmax = amaxlst[i]; 
+      ch.group = grouplst[i];
       channels[ch.name] = ch; 
     }
 
