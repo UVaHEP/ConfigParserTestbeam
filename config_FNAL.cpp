@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
     //For now I'm using the manual setup
 
     tree->SetBranchAddress("amp", &cfg.treeData.amp);
-    tree->SetBranchAddress("LP2_50", &cfg.treeData.time);
+    tree->SetBranchAddress("LP2_30", &cfg.treeData.time);
     tree->SetBranchAddress("gaus_mean", &cfg.treeData.gaus_mean);
     tree->SetBranchAddress("x_dut", &cfg.treeData.x_dut);
     tree->SetBranchAddress("y_dut", &cfg.treeData.y_dut);
@@ -264,6 +264,7 @@ int main(int argc, char **argv) {
     for(auto &chan : cfg.channels) {
       auto &ch = chan.second;
       c_amp->cd(canvas+1);
+      canvas++;  //added MJ
       gPad->SetLogy();
 
       auto *h_amp = rootstuff[ch.name].h_amp; 
@@ -315,6 +316,7 @@ int main(int argc, char **argv) {
     for (auto &chan : cfg.channels)  {
       auto &ch = chan.second;
       c_time -> cd(canvas+1);
+      canvas++;  //added by MJ
       gPad -> SetLogy();
       auto *h_time = rootstuff[ch.name].h_time;
       h_time->SetStats(0);
